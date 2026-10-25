@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Profile Card</title>
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Khmer Font (Kantumruy Pro) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        khmer: ['Kantumruy Pro', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Kantumruy Pro', sans-serif;
+        }
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .dark .glassmorphism {
+            background: rgba(17, 24, 39, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+<body class="bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex items-center justify-center p-4 transition-colors duration-300">
+
+    <!-- Top Action Buttons (Theme Toggle & Edit Settings) -->
+    <div class="fixed top-4 right-4 flex gap-2 z-50">
+        <!-- Edit Button -->
+        <button onclick="openEditModal()" class="p-3 rounded-full bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-md hover:scale-105 transition-transform duration-200" title="កែសម្រួលព័ត៌មាន">
+            <i class="fa-solid fa-gear text-lg"></i>
+        </button>
+        <!-- Theme Toggle Button -->
+        <button id="themeToggle" class="p-3 rounded-full bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-md hover:scale-105 transition-transform duration-200">
+            <i class="fa-solid fa-moon dark:hidden text-lg"></i>
+            <i class="fa-solid fa-sun hidden dark:block text-lg text-amber-400"></i>
+        </button>
+    </div>
+
+    <!-- Main Card Container -->
+    <div class="w-full max-w-md glassmorphism rounded-3xl shadow-2xl overflow-hidden p-6 relative">
+        
+        <!-- Header Background Banner -->
+        <div class="h-28 -mx-6 -mt-6 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-b-3xl relative">
+            <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        </div>
+
+        <!-- Avatar & Basic Profile Section -->
+        <div class="flex flex-col items-center -mt-16 relative z-10 text-center">
+            <!-- Profile Photo -->
+            <div class="w-28 h-28 rounded-full ring-4 ring-white dark:ring-slate-900 overflow-hidden shadow-lg bg-slate-200">
+                <img id="profileImg" src="" alt="Profile Picture" class="w-full h-full object-cover">
+            </div>
+
+            <!-- Name, Title, and Bio -->
+            <h1 id="userName" class="text-2xl font-bold mt-3 text-slate-900 dark:text-white">...</h1>
+            <p id="userTitle" class="text-sm font-medium text-blue-600 dark:text-blue-400 mt-0.5">...</p>
+            <p id="userBio" class="text-xs text-slate-500 dark:text-slate-400 mt-2 max-w-xs px-2">...</p>
+        </div>
+
+        <!-- Phone Call & Copy Buttons -->
+        <div class="mt-6 flex gap-3">
+            <a id="callBtn" href="#" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl text-center font-medium shadow-md shadow-blue-500/20 flex items-center justify-center gap-2 transition-all active:scale-95">
+                <i class="fa-solid fa-phone"></i> ខលទូរសព្ទ
+            </a>
+            <button onclick="copyPhoneNumber()" class="bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-4 py-2.5 rounded-xl font-medium transition-all active:scale-95" title="ចម្លងលេខទូរសព្ទ">
+                <i class="fa-regular fa-copy"></i>
+            </button>
+        </div>
+
+        <!-- Social Links & Website Section -->
+        <div class="mt-6 space-y-3">
+            <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-1">បណ្តាញសង្គម និងគេហទំព័រ</h2>
+            
+            <!-- គេហទំព័រផ្ទាល់ខ្លួន (Website) -->
+            <a id="websiteBtn" href="#" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 border border-slate-100 dark:border-slate-800 transition-all duration-200 group">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-globe"></i>
+                    </div>
+                    <div>
+                        <div class="font-medium text-sm text-slate-800 dark:text-slate-200">គេហទំព័រផ្ទាល់ខ្លួន (Website)</div>
+                        <div class="text-xs text-slate-400">ចូលមើលកិច្ចការ ឬ Portfolio របស់ខ្ញុំ</div>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-1 transition-transform"></i>
+            </a>
+
+            <!-- Facebook Link -->
+            <a id="facebookBtn" href="#" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 hover:bg-blue-50 dark:hover:bg-blue-950/40 border border-slate-100 dark:border-slate-800 transition-all duration-200 group">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-lg">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </div>
+                    <div>
+                        <div class="font-medium text-sm text-slate-800 dark:text-slate-200">Facebook</div>
+                        <div class="text-xs text-slate-400">ចុចដើម្បីមើល Profile</div>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-1 transition-transform"></i>
+            </a>
+
+            <!-- Telegram Link -->
+            <a id="telegramBtn" href="#" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 hover:bg-sky-50 dark:hover:bg-sky-950/40 border border-slate-100 dark:border-slate-800 transition-all duration-200 group">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-500 flex items-center justify-center text-lg">
+                        <i class="fa-brands fa-telegram"></i>
+                    </div>
+                    <div>
+                        <div class="font-medium text-sm text-slate-800 dark:text-slate-200">Telegram</div>
+                        <div class="text-xs text-slate-400">ផ្ញើសារតាម Telegram</div>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-1 transition-transform"></i>
+            </a>
+
+            <!-- TikTok Link -->
+            <a id="tiktokBtn" href="#" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 border border-slate-100 dark:border-slate-800 transition-all duration-200 group">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-slate-900/10 dark:bg-slate-100/10 text-slate-900 dark:text-slate-100 flex items-center justify-center text-lg">
+                        <i class="fa-brands fa-tiktok"></i>
+                    </div>
+                    <div>
+                        <div class="font-medium text-sm text-slate-800 dark:text-slate-200">TikTok</div>
+                        <div class="text-xs text-slate-400">តាមដានលើ TikTok</div>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-1 transition-transform"></i>
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-6 pt-4 border-t border-slate-200 dark:border-slate-800/80 text-center">
+            <p class="text-xs text-slate-400">© Digital Profile Card</p>
+        </div>
+
+    </div>
+
+    <!-- ================= EDIT MODAL (ផ្ទាំងសម្រាប់កែសម្រួលទិន្នន័យ) ================= -->
+    <div id="editModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-3xl p-6 shadow-2xl border border-slate-200 dark:border-slate-800 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold text-slate-900 dark:text-white"><i class="fa-solid fa-pen-to-square text-blue-500 mr-2"></i>កែសម្រួលព័ត៌មានកាត</h2>
+                <button onclick="closeEditModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-xl font-bold">&times;</button>
+            </div>
+
+            <form id="editForm" onsubmit="saveProfile(event)" class="space-y-4">
+                <!-- Upload រូបថត Profile ( File Input ) -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">ជ្រើសរើសរូបថត Profile (Upload Photo)</label>
+                    <div class="flex items-center gap-3">
+                        <img id="previewAvatar" src="" class="w-14 h-14 rounded-full object-cover border-2 border-blue-500 bg-slate-100">
+                        <input type="file" id="inputAvatarFile" accept="image/*" onchange="previewImage(event)" class="block w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-slate-800 dark:file:text-blue-400">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">ឈ្មោះរបស់អ្នក</label>
+                    <input type="text" id="inputName" class="w-full px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">ជំនាញ ឬ តួនាទី (Title)</label>
+                    <input type="text" id="inputTitle" class="w-full px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">ជីវប្រវត្តិសង្ខេប (Bio)</label>
+                    <textarea id="inputBio" rows="2" class="w-full px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">លេខទូរសព្ទ</label>
+                    <input type="text" id="inputPhone" class="w-full px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Link គេហទំព័រផ្ទាល់ខ្លួន (Website)</label>
+                    <input type="url" id="inputWebsite" class="w-full px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Link Facebook</label>
+                    <input type="url" id="inputFacebook" class="w-full px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Link Telegram</label>
+                    <input type="url" id="inputTelegram" class="w-full px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Link TikTok</label>
+                    <input type="url" id="inputTiktok" class="w-full px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <div class="flex gap-3 pt-2">
+                    <button type="button" onclick="closeEditModal()" class="flex-1 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 py-2.5 rounded-xl font-medium text-sm hover:bg-slate-300 transition-all">បោះបង់</button>
+                    <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl font-medium text-sm shadow-md transition-all">រក្សាទុក (Save)</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Alert Notification -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-4 py-2 rounded-full text-xs shadow-xl opacity-0 pointer-events-none transition-all duration-300 transform translate-y-2">
+        បានរក្សាទុកព័ត៌មានដោយជោគជ័យ!
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- ផ្នែកកូដ JAVASCRIPT: គ្រប់គ្រងការបង្ហាញ Upload និង រក្សាទុកទិន្នន័យ -->
+    <!-- ========================================================================= -->
+    <script>
+        // ទិន្នន័យដើម ឬទាញយកពី LocalStorage
+        let defaultAvatar = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop";
+        let tempAvatarBase64 = null; // រក្សាទុក Base64 បណ្តោះអាសន្នពេលជ្រើសរើសរូបភាព
+
+        let myInfo = JSON.parse(localStorage.getItem('digitalCardData')) || {
+            name: "សិដ្ឋ", 
+            title: "Web Developer & Student", 
+            bio: "ស្វាគមន៍មកកាន់កាតឌីជីថលរបស់ខ្ញុំ! អ្នកអាចទាក់ទងខ្ញុំតាមប្រព័ន្ធបណ្តាញសង្គមខាងក្រោម។", 
+            phone: "0961234567", 
+            websiteUrl: "https://yourwebsite.com", 
+            facebookUrl: "https://facebook.com", 
+            telegramUrl: "https://t.me", 
+            tiktokUrl: "https://tiktok.com", 
+            avatarUrl: defaultAvatar
+        };
+
+        // មុខងារបង្ហាញទិន្នន័យលើ Card
+        function renderCard() {
+            document.getElementById('userName').innerText = myInfo.name;
+            document.getElementById('userTitle').innerText = myInfo.title;
+            document.getElementById('userBio').innerText = myInfo.bio;
+            document.getElementById('profileImg').src = myInfo.avatarUrl || defaultAvatar;
+            
+            document.getElementById('callBtn').href = "tel:" + myInfo.phone;
+            document.getElementById('websiteBtn').href = myInfo.websiteUrl;
+            document.getElementById('facebookBtn').href = myInfo.facebookUrl;
+            document.getElementById('telegramBtn').href = myInfo.telegramUrl;
+            document.getElementById('tiktokBtn').href = myInfo.tiktokUrl;
+        }
+
+        // មុខងារ Preview រូបភាពពេលជ្រើសរើស File ពីទូរសព្ទ/កុំព្យូទ័រ
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    tempAvatarBase64 = e.target.result;
+                    document.getElementById('previewAvatar').src = tempAvatarBase64;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // បើកផ្ទាំងកែសម្រួល (Modal) និងបំពេញទិន្នន័យចាស់ចូល Form
+        function openEditModal() {
+            document.getElementById('inputName').value = myInfo.name;
+            document.getElementById('inputTitle').value = myInfo.title;
+            document.getElementById('inputBio').value = myInfo.bio;
+            document.getElementById('inputPhone').value = myInfo.phone;
+            document.getElementById('inputWebsite').value = myInfo.websiteUrl;
+            document.getElementById('inputFacebook').value = myInfo.facebookUrl;
+            document.getElementById('inputTelegram').value = myInfo.telegramUrl;
+            document.getElementById('inputTiktok').value = myInfo.tiktokUrl;
+            document.getElementById('previewAvatar').src = myInfo.avatarUrl || defaultAvatar;
+            tempAvatarBase64 = null; // reset រូបភាពបណ្តោះអាសន្ន
+
+            document.getElementById('editModal').classList.remove('hidden');
+        }
+
+        // បិទផ្ទាំងកែសម្រួល
+        function closeEditModal() {
+            document.getElementById('editModal').classList.add('hidden');
+        }
+
+        // រក្សាទុកទិន្នន័យថ្មី
+        function saveProfile(event) {
+            event.preventDefault();
+            
+            myInfo.name = document.getElementById('inputName').value;
+            myInfo.title = document.getElementById('inputTitle').value;
+            myInfo.bio = document.getElementById('inputBio').value;
+            myInfo.phone = document.getElementById('inputPhone').value;
+            myInfo.websiteUrl = document.getElementById('inputWebsite').value;
+            myInfo.facebookUrl = document.getElementById('inputFacebook').value;
+            myInfo.telegramUrl = document.getElementById('inputTelegram').value;
+            myInfo.tiktokUrl = document.getElementById('inputTiktok').value;
+
+            // ប្រសិនបើមានជ្រើសរើសរូបថតថ្មី
+            if (tempAvatarBase64) {
+                myInfo.avatarUrl = tempAvatarBase64;
+            }
+
+            // រក្សាទុកក្នុង browser (LocalStorage)
+            localStorage.setItem('digitalCardData', JSON.stringify(myInfo));
+
+            renderCard();
+            closeEditModal();
+            showToast("បានរក្សាទុកព័ត៌មានដោយជោគជ័យ!");
+        }
+
+        // បង្ហាញ Toast Notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.classList.remove('opacity-0', 'translate-y-2', 'pointer-events-none');
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2', 'pointer-events-none');
+            }, 2000);
+        }
+
+        // មុខងារ Dark Mode Toggle
+        const themeToggleBtn = document.getElementById('themeToggle');
+        themeToggleBtn.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+        });
+
+        // មុខងារ Copy លេខទូរសព្ទ
+        function copyPhoneNumber() {
+            navigator.clipboard.writeText(myInfo.phone).then(() => {
+                showToast("បានចម្លងលេខទូរសព្ទរួចរាល់!");
+            });
+        }
+
+        // ចាប់ផ្ដើមដំណើរការទាញទិន្នន័យពេលបើកវេបសាយ
+        renderCard();
+    </script>
+</body>
+</html>
